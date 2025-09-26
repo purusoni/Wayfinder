@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lockwood Library Wayfinder</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.4.4/dist/panzoom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Application -->
+        <main class="app-main">
+            
+            <!-- Left Column - Controls and Directions -->
+            <section class="controls-panel" id="controlsPanel">
+                
+                <!-- Initial Selection View -->
+                <div class="selection-view" id="selectionView">
+                    <header class="panel-header">
+                        <h1 class="app-title">Lockwood Library Wayfinder</h1>
+                        <p class="current-location">
+                            <span class="location-icon">📍</span>
+                            You are at: <strong>Main Entrance Kiosk</strong>
+                        </p>
+                    </header>
+                    
+                    <!-- Search Section -->
+                    <div class="search-section">
+                        <div class="search-container">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                class="search-input" 
+                                placeholder="Where would you like to go?"
+                                autocomplete="off"
+                            >
+                            <button class="search-button" id="searchButton">
+                                <span class="search-icon">🔍</span>
+                            </button>
+                        </div>
+                        <div class="autocomplete-suggestions" id="autocompleteSuggestions"></div>
+                    </div>
+                    
+                    <!-- Category Buttons -->
+                    <div class="categories-section">
+                        <h3 class="section-title">Browse by Category</h3>
+                        <div class="category-buttons">
+                            <button class="category-btn" data-category="restroom">
+                                <span class="category-icon">🚻</span>
+                                Restrooms
+                            </button>
+                            <button class="category-btn" data-category="study">
+                                <span class="category-icon">📚</span>
+                                Study Rooms
+                            </button>
+                            <button class="category-btn" data-category="computer">
+                                <span class="category-icon">💻</span>
+                                Computer Labs
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Accessibility Options -->
+                    <div class="accessibility-section">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="accessibleRoute" class="accessibility-checkbox">
+                            <span class="checkbox-custom"></span>
+                            Accessible Route Only
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Directions View -->
+                <div class="directions-view" id="directionsView" style="display: none;">
+                    <header class="directions-header">
+                        <button class="back-button" id="backButton">
+                            <span class="back-icon">←</span>
+                            Back to Search
+                        </button>
+                        <div class="route-info">
+                            <div class="route-text">
+                                <h2 class="route-title" id="routeTitle">Route Directions</h2>
+                                <p class="route-description" id="routeDescription"></p>
+                            </div>
+                            <!-- QR Code - Always Visible (Desktop Only) -->
+                            <div class="qr-header-section" id="qrHeaderSection">
+                                <div class="qr-compact">
+                                    <div class="qr-header">
+                                        <span class="qr-icon">📱</span>
+                                        <span class="qr-title-text">Take with you</span>
+                                    </div>
+                                    <div id="qrcode"></div>
+                                    <p class="qr-compact-text">Scan to continue on your phone</p>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <!-- Step-by-step directions -->
+                    <div class="directions-list" id="directionsList">
+                        <!-- Directions will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+            </section>
+            
+            <!-- Right Column - Interactive Map -->
+            <section class="map-panel">
+                
+                <!-- Map Controls -->
+                <div class="map-controls">
+                    <div class="floor-selector">
+                        <button class="floor-btn active" data-floor="1" id="floor1Btn">Floor 1</button>
+                        <button class="floor-btn" data-floor="2" id="floor2Btn">Floor 2</button>
+                    </div>
+                    
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="zoomInBtn">
+                            <span class="zoom-icon">+</span>
+                        </button>
+                        <button class="zoom-btn" id="zoomOutBtn">
+                            <span class="zoom-icon">−</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Map Container -->
+                <div class="map-container" id="mapContainer">
+                    <div class="map-wrapper" id="mapWrapper">
+                        <!-- SVG maps will be loaded here -->
+                    </div>
+                </div>
+                
+            </section>
+            
+        </main>
+        
+        <!-- Loading Screen -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading library map...</p>
+        </div>
+        
+        <!-- Error Screen -->
+        <div class="error-screen" id="errorScreen" style="display: none;">
+            <div class="error-content">
+                <h2 class="error-title">Unable to load map</h2>
+                <p class="error-message">Please try refreshing the page or contact library staff for assistance.</p>
+                <button class="retry-button" id="retryButton">Try Again</button>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Custom JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+{
+  "nodes": [
+    {
+      "id": "F1_KIOSK_A",
+      "floor": 1,
+      "type": "kiosk",
+      "name": "Main Entrance Kiosk",
+      "coords": {"x": 100, "y": 300},
+      "search_keywords": ["entrance", "main", "kiosk"]
+    },
+    {
+      "id": "F1_CIRC_DESK",
+      "floor": 1,
+      "type": "destination",
+      "name": "Circulation Desk",
+      "coords": {"x": 300, "y": 450},
+      "search_keywords": ["checkout", "returns", "books"]
+    },
+    {
+      "id": "F1_COMP_LAB",
+      "floor": 1,
+      "type": "destination",
+      "name": "Computer Lab 1A",
+      "coords": {"x": 600, "y": 550},
+      "search_keywords": ["computers", "printing", "tech"]
+    },
+    {
+      "id": "F1_RESTROOM",
+      "floor": 1,
+      "type": "destination",
+      "name": "First Floor Restrooms",
+      "coords": {"x": 700, "y": 200},
+      "search_keywords": ["bathroom", "wc"]
+    },
+    {
+      "id": "F1_STAIRS_A",
+      "floor": 1,
+      "type": "transition",
+      "name": "Main Staircase",
+      "coords": {"x": 400, "y": 250},
+      "links_to": "F2_STAIRS_A",
+      "search_keywords": ["stairs", "up"]
+    },
+    {
+      "id": "F2_STAIRS_A",
+      "floor": 2,
+      "type": "transition",
+      "name": "Main Staircase",
+      "coords": {"x": 400, "y": 250},
+      "links_to": "F1_STAIRS_A",
+      "search_keywords": ["stairs", "down"]
+    },
+    {
+      "id": "F2_RARE_BOOKS",
+      "floor": 2,
+      "type": "destination",
+      "name": "Rare Books Collection",
+      "coords": {"x": 200, "y": 200},
+      "search_keywords": ["archives", "special", "old books"]
+    },
+    {
+      "id": "F2_STUDY_B",
+      "floor": 2,
+      "type": "destination",
+      "name": "Group Study Room 2B",
+      "coords": {"x": 600, "y": 300},
+      "search_keywords": ["study", "group room"]
+    },
+    {
+      "id": "F2_RESTROOM",
+      "floor": 2,
+      "type": "destination",
+      "name": "Second Floor Restrooms",
+      "coords": {"x": 700, "y": 500},
+      "search_keywords": ["bathroom", "wc"]
+    }
+  ],
+  "edges": [
+    {
+      "from": "F1_KIOSK_A",
+      "to": "F1_CIRC_DESK",
+      "weight": 15,
+      "instructions": "Walk straight ahead towards the circulation desk",
+      "landmark_photo": "circulation_desk_approach.jpg",
+      "path_id": "F1_KIOSK_A-F1_CIRC_DESK"
+    },
+    {
+      "from": "F1_KIOSK_A",
+      "to": "F1_STAIRS_A",
+      "weight": 20,
+      "instructions": "Turn right and walk towards the main staircase",
+      "landmark_photo": "main_staircase_f1.jpg",
+      "path_id": "F1_KIOSK_A-F1_STAIRS_A"
+    },
+    {
+      "from": "F1_STAIRS_A",
+      "to": "F2_STAIRS_A",
+      "weight": 10,
+      "instructions": "Take the stairs to Floor 2",
+      "landmark_photo": "staircase_going_up.jpg",
+      "path_id": "F1_STAIRS_A-F2_STAIRS_A",
+      "type": "floor_change"
+    },
+    {
+      "from": "F2_STAIRS_A",
+      "to": "F2_RARE_BOOKS",
+      "weight": 25,
+      "instructions": "Turn left and walk down the hallway to the Rare Books Collection",
+      "landmark_photo": "rare_books_hallway.jpg",
+      "path_id": "F2_STAIRS_A-F2_RARE_BOOKS"
+    }
+  ],
+  "paths": {
+    "F1_KIOSK_A-F2_RARE_BOOKS": [
+      {
+        "instruction": "Walk straight ahead and turn right towards the main staircase",
+        "landmark_photo": "main_staircase_f1.jpg",
+        "distance": 20,
+        "floor": 1,
+        "path_id": "F1_KIOSK_A-F1_STAIRS_A"
+      },
+      {
+        "instruction": "Take the stairs up to Floor 2",
+        "landmark_photo": "staircase_going_up.jpg",
+        "distance": 10,
+        "floor": 1,
+        "type": "floor_change",
+        "next_floor": 2,
+        "path_id": "F1_STAIRS_A-F2_STAIRS_A"
+      },
+      {
+        "instruction": "Turn left and walk down the hallway to the Rare Books Collection",
+        "landmark_photo": "rare_books_hallway.jpg",
+        "distance": 25,
+        "floor": 2,
+        "path_id": "F2_STAIRS_A-F2_RARE_BOOKS"
+      }
+    ],
+    "F1_KIOSK_A-F1_COMP_LAB": [
+      {
+        "instruction": "Walk straight ahead towards the circulation desk",
+        "landmark_photo": "circulation_desk_approach.jpg",
+        "distance": 15,
+        "floor": 1,
+        "path_id": "F1_KIOSK_A-F1_CIRC_DESK"
+      },
+      {
+        "instruction": "Continue past the circulation desk and turn right towards the computer lab",
+        "landmark_photo": "computer_lab_entrance.jpg",
+        "distance": 30,
+        "floor": 1,
+        "path_id": "F1_CIRC_DESK-F1_COMP_LAB"
+      }
+    ],
+    "F1_KIOSK_A-F1_RESTROOM": [
+      {
+        "instruction": "Walk straight ahead and continue to the back of the floor",
+        "landmark_photo": "main_hallway_f1.jpg",
+        "distance": 25,
+        "floor": 1,
+        "path_id": "F1_KIOSK_A-F1_RESTROOM_HALL"
+      },
+      {
+        "instruction": "Turn right at the end of the hallway to find the restrooms",
+        "landmark_photo": "restroom_sign_f1.jpg",
+        "distance": 10,
+        "floor": 1,
+        "path_id": "F1_RESTROOM_HALL-F1_RESTROOM"
+      }
+    ],
+    "F1_KIOSK_A-F2_STUDY_B": [
+      {
+        "instruction": "Walk straight ahead and turn right towards the main staircase",
+        "landmark_photo": "main_staircase_f1.jpg",
+        "distance": 20,
+        "floor": 1,
+        "path_id": "F1_KIOSK_A-F1_STAIRS_A"
+      },
+      {
+        "instruction": "Take the stairs up to Floor 2",
+        "landmark_photo": "staircase_going_up.jpg",
+        "distance": 10,
+        "floor": 1,
+        "type": "floor_change",
+        "next_floor": 2,
+        "path_id": "F1_STAIRS_A-F2_STAIRS_A"
+      },
+      {
+        "instruction": "Turn right and walk towards the study rooms area",
+        "landmark_photo": "study_rooms_hallway.jpg",
+        "distance": 20,
+        "floor": 2,
+        "path_id": "F2_STAIRS_A-F2_STUDY_HALL"
+      },
+      {
+        "instruction": "Group Study Room 2B is on your left",
+        "landmark_photo": "study_room_2b_door.jpg",
+        "distance": 5,
+        "floor": 2,
+        "path_id": "F2_STUDY_HALL-F2_STUDY_B"
+      }
+    ],
+    "F1_KIOSK_A-F2_RESTROOM": [
+      {
+        "instruction": "Walk straight ahead and turn right towards the main staircase",
+        "landmark_photo": "main_staircase_f1.jpg",
+        "distance": 20,
+        "floor": 1,
+        "path_id": "F1_KIOSK_A-F1_STAIRS_A"
+      },
+      {
+        "instruction": "Take the stairs up to Floor 2",
+        "landmark_photo": "staircase_going_up.jpg",
+        "distance": 10,
+        "floor": 1,
+        "type": "floor_change",
+        "next_floor": 2,
+        "path_id": "F1_STAIRS_A-F2_STAIRS_A"
+      },
+      {
+        "instruction": "Walk straight down the main hallway towards the back of the floor",
+        "landmark_photo": "main_hallway_f2.jpg",
+        "distance": 30,
+        "floor": 2,
+        "path_id": "F2_STAIRS_A-F2_RESTROOM_HALL"
+      },
+      {
+        "instruction": "The restrooms are at the end of the hallway on your right",
+        "landmark_photo": "restroom_sign_f2.jpg",
+        "distance": 8,
+        "floor": 2,
+        "path_id": "F2_RESTROOM_HALL-F2_RESTROOM"
+      }
+    ]
+  }
+}
