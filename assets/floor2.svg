@@ -55,97 +55,73 @@
   <rect x="0" y="0" width="800" height="600" class="floor-background"/>
   
   <!-- CSS for theme switching -->
-  <style>
-    .floor-background { fill: url(#floor2PatternLight); }
-    .room-fill { fill: url(#roomGradientLight); filter: url(#shadowLight); }
-    .special-fill { fill: url(#specialGradientLight); filter: url(#shadowLight); }
-    .wall-stroke { stroke: #64748b; stroke-width: 3; }
-    .text-primary { fill: #1e3a8a; font-family: 'Inter', -apple-system, sans-serif; font-weight: 600; }
-    .text-secondary { fill: #64748b; font-family: 'Inter', -apple-system, sans-serif; font-weight: 500; }
-    .text-special { fill: #92400e; font-family: 'Inter', -apple-system, sans-serif; font-weight: 600; }
-    .destination-marker { fill: url(#accentGradient); }
-    .stairs-marker { fill: #06d6a0; }
-    
-    @media (prefers-color-scheme: dark) {
-      .floor-background { fill: url(#floor2PatternDark); }
-      .room-fill { fill: url(#roomGradientDark); filter: url(#shadowDark); }
-      .special-fill { fill: url(#specialGradientDark); filter: url(#shadowDark); }
-      .wall-stroke { stroke: #475569; stroke-width: 3; }
-      .text-primary { fill: #3b82f6; }
-      .text-secondary { fill: #94a3b8; }
-      .text-special { fill: #fbbf24; }
-    }
-  </style>
+
   
   <!-- Outer Building Shell -->
-  <rect x="60" y="120" width="680" height="360" fill="none" class="wall-stroke" rx="8"/>
+  <rect x="60" y="120" width="680" height="360" fill="none" class="wall-stroke" />
   
   <!-- Main Staircase (from Floor 1) -->
-  <rect x="420" y="170" width="80" height="80" class="room-fill wall-stroke" rx="6"/>
+  <rect x="420" y="170" width="80" height="80" class="room-fill wall-stroke" />
   <text x="460" y="195" text-anchor="middle" class="text-primary" font-size="12">Stairs</text>
-  <text x="460" y="210" text-anchor="middle" class="text-primary" font-size="18">⬇</text>
+
   <text x="460" y="230" text-anchor="middle" class="text-secondary" font-size="9">from Floor 1</text>
   <circle id="F2_STAIRS_DEST" cx="460" cy="210" r="6" class="stairs-marker"/>
   
   <!-- Rare Books Collection (Special) -->
-  <rect x="70" y="170" width="200" height="120" class="special-fill wall-stroke" rx="6"/>
-  <text x="170" y="200" text-anchor="middle" class="text-special" font-size="14" font-weight="bold">Rare Books Collection</text>
-  <text x="170" y="220" text-anchor="middle" class="text-special" font-size="11">Special Collections</text>
-  <text x="150" y="245" text-anchor="middle" class="text-special" font-size="14">📜</text>
-  <text x="170" y="245" text-anchor="middle" class="text-special" font-size="14">📚</text>
-  <text x="190" y="245" text-anchor="middle" class="text-special" font-size="14">📜</text>
-  <circle id="F2_RARE_DEST" cx="170" cy="230" r="6" class="destination-marker"/>
+  <rect x="70" y="170" width="240" height="120" class="special-fill wall-stroke"/>
+  <text x="190" y="200" text-anchor="middle" class="text-special" font-size="14" font-weight="bold">Rare Books Collection</text>
+  <text x="190" y="220" text-anchor="middle" class="text-special" font-size="11">Special Collections</text>
+
+  <circle id="F2_RARE_DEST" cx="190" cy="230" r="6" class="destination-marker"/>
   
   <!-- Study Rooms Complex -->
-  <rect x="520" y="170" width="160" height="180" class="room-fill wall-stroke" rx="6"/>
+  <rect x="520" y="170" width="160" height="180" class="room-fill wall-stroke" />
   <text x="600" y="195" text-anchor="middle" class="text-primary" font-size="13">Study Rooms</text>
   <text x="600" y="215" text-anchor="middle" class="text-secondary" font-size="10">Group & Individual Study</text>
   
   <!-- Individual Study Room 2A -->
-  <rect x="535" y="225" width="65" height="50" class="room-fill wall-stroke" rx="3"/>
+  <rect x="535" y="225" width="65" height="50" class="room-fill wall-stroke" />
   <text x="567" y="240" text-anchor="middle" class="text-secondary" font-size="9">Room 2A</text>
-  <text x="567" y="255" text-anchor="middle" class="text-secondary" font-size="12">🪑</text>
+
   
   <!-- Group Study Room 2B (Featured) -->
-  <rect x="615" y="225" width="65" height="50" class="room-fill wall-stroke" rx="3"/>
+  <rect x="615" y="225" width="65" height="50" class="room-fill wall-stroke" />
   <text x="647" y="240" text-anchor="middle" class="text-primary" font-size="9" font-weight="bold">Room 2B</text>
-  <text x="647" y="255" text-anchor="middle" class="text-secondary" font-size="10">🪑🪑🪑</text>
+
   <circle id="F2_STUDY_DEST" cx="647" cy="250" r="6" class="destination-marker"/>
   
   <!-- Study Room 2C -->
-  <rect x="535" y="285" width="65" height="50" class="room-fill wall-stroke" rx="3"/>
+  <rect x="535" y="285" width="65" height="50" class="room-fill wall-stroke" />
   <text x="567" y="300" text-anchor="middle" class="text-secondary" font-size="9">Room 2C</text>
-  <text x="567" y="315" text-anchor="middle" class="text-secondary" font-size="12">🪑</text>
+
   
   <!-- Study Room 2D -->
-  <rect x="615" y="285" width="65" height="50" class="room-fill wall-stroke" rx="3"/>
+  <rect x="615" y="285" width="65" height="50" class="room-fill wall-stroke" />
   <text x="647" y="300" text-anchor="middle" class="text-secondary" font-size="9">Room 2D</text>
-  <text x="647" y="315" text-anchor="middle" class="text-secondary" font-size="10">🪑🪑</text>
+
   
   <!-- Academic Services -->
-  <rect x="70" y="320" width="180" height="100" class="room-fill wall-stroke" rx="6"/>
-  <text x="160" y="350" text-anchor="middle" class="text-primary" font-size="13">Academic Services</text>
-  <text x="160" y="370" text-anchor="middle" class="text-secondary" font-size="10">Research Help • Writing Center</text>
-  <text x="160" y="390" text-anchor="middle" class="text-secondary" font-size="16">💼</text>
+  <rect x="70" y="320" width="200" height="100" class="room-fill wall-stroke"/>
+  <text x="170" y="350" text-anchor="middle" class="text-primary" font-size="13">Academic Services</text>
+  <text x="170" y="370" text-anchor="middle" class="text-secondary" font-size="10">Research Help • Writing Center</text>
+
   
   <!-- Periodicals & Journals -->
-  <rect x="280" y="320" width="140" height="100" class="room-fill wall-stroke" rx="6"/>
+  <rect x="280" y="320" width="140" height="100" class="room-fill wall-stroke" />
   <text x="350" y="350" text-anchor="middle" class="text-primary" font-size="13">Periodicals</text>
   <text x="350" y="370" text-anchor="middle" class="text-secondary" font-size="10">Journals & Magazines</text>
-  <text x="335" y="390" text-anchor="middle" class="text-secondary" font-size="14">📰</text>
-  <text x="365" y="390" text-anchor="middle" class="text-secondary" font-size="14">📰</text>
+
   
   <!-- Second Floor Restrooms -->
-  <rect x="520" y="380" width="100" height="60" class="room-fill wall-stroke" rx="6"/>
+  <rect x="520" y="380" width="100" height="60" class="room-fill wall-stroke" />
   <text x="570" y="405" text-anchor="middle" class="text-primary" font-size="12">Restrooms</text>
-  <text x="570" y="425" text-anchor="middle" class="text-primary" font-size="16">🚻</text>
+
   <circle id="F2_RESTROOM_DEST" cx="570" cy="410" r="6" class="destination-marker"/>
   
   <!-- Quiet Reading Area -->
-  <rect x="300" y="270" width="100" height="40" fill="none" class="wall-stroke" stroke-dasharray="8,4" rx="4"/>
+  <rect x="300" y="270" width="100" height="40" fill="none" class="wall-stroke" stroke-dasharray="8,4" />
   <text x="350" y="285" text-anchor="middle" class="text-secondary" font-size="10">Quiet Reading</text>
-  <text x="340" y="300" text-anchor="middle" class="text-secondary" font-size="12">📖</text>
-  <text x="360" y="300" text-anchor="middle" class="text-secondary" font-size="12">🪑</text>
+
   
   <!-- Navigation Paths (for route highlighting) -->
   <path id="F2_STAIRS_A-F2_RARE_BOOKS" d="M 440 210 L 300 210 L 200 210" 
@@ -170,14 +146,14 @@
   
   <!-- Modern Floor Label -->
   <g transform="translate(650, 520)">
-    <rect x="0" y="0" width="120" height="40" class="room-fill wall-stroke" rx="8"/>
+    <rect x="0" y="0" width="120" height="40" class="room-fill wall-stroke" />
     <text x="60" y="18" text-anchor="middle" class="text-primary" font-size="16" font-weight="bold">FLOOR</text>
     <text x="60" y="32" text-anchor="middle" class="text-primary" font-size="18" font-weight="bold">2</text>
   </g>
   
   <!-- Enhanced Legend -->
   <g transform="translate(70, 490)">
-    <rect x="0" y="0" width="160" height="60" class="room-fill wall-stroke" rx="6"/>
+    <rect x="0" y="0" width="220" height="60" class="room-fill wall-stroke"/>
     <text x="10" y="18" class="text-primary" font-size="11" font-weight="bold">Legend</text>
     <circle cx="15" cy="32" r="4" class="stairs-marker"/>
     <text x="28" y="36" class="text-secondary" font-size="9">Stairs Access</text>

@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lockwood Library Wayfinder - Vol 1.0</title>
-    
+
     <!-- Google Fonts: Lora for that academic Serif look -->
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.4.4/dist/panzoom.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
-    
+
     <!-- Custom Styles -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+
     <!-- The "Paper" Container -->
     <div class="container">
-        
+
         <!-- Header: The "Title" of the Article -->
         <header class="panel-header">
             <h1 class="app-title">Lockwood Library Wayfinder</h1>
@@ -35,30 +39,25 @@
 
         <!-- Main Content Grid -->
         <main class="app-main">
-            
+
             <!-- Left Column: Abstract, Methodology (Controls) -->
             <section class="controls-panel" id="controlsPanel">
-                
+
                 <!-- "Abstract": Search & Selection -->
                 <div class="selection-view" id="selectionView">
-                    
+
                     <h3 class="section-title">1. Search Parameters</h3>
                     <div class="search-section">
                         <div class="search-container">
-                            <input 
-                                type="text" 
-                                id="searchInput" 
-                                class="search-input" 
-                                placeholder="Enter destination keyword..."
-                                autocomplete="off"
-                            >
+                            <input type="text" id="searchInput" class="search-input"
+                                placeholder="Enter destination keyword..." autocomplete="off">
                             <button class="search-button" id="searchButton">
                                 <span class="search-icon">🔍</span>
                             </button>
                             <div class="autocomplete-suggestions" id="autocompleteSuggestions"></div>
                         </div>
                     </div>
-                    
+
                     <h3 class="section-title">2. Categorical filters</h3>
                     <div class="categories-section">
                         <div class="category-buttons">
@@ -84,79 +83,97 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- "Results": Directions View -->
                 <div class="directions-view" id="directionsView" style="display: none;">
                     <button class="back-button" id="backButton">
                         ← Return to Parameters
                     </button>
-                    
+
                     <div class="route-info">
                         <div class="route-text">
                             <h2 class="route-title" id="routeTitle">3. Navigation Analysis</h2>
-                            <p class="route-description" id="routeDescription" style="font-style: italic; color: #666;"></p>
+                            <p class="route-description" id="routeDescription" style="font-style: italic; color: #666;">
+                            </p>
                         </div>
-                        
+
                         <!-- QR Code Section -->
                         <div class="qr-compact" id="qrHeaderSection">
                             <div id="qrcode"></div>
                             <p class="qr-compact-text">Fig 1a. Mobile Data Transfer</p>
                         </div>
                     </div>
-                    
+
                     <div class="directions-list" id="directionsList">
                         <!-- Populated by JS -->
                     </div>
                 </div>
-                
+
             </section>
-            
+
             <!-- Right Column: "Figure 1" (The Map) -->
             <section class="map-panel" data-active-floor="1">
-                
+
                 <!-- Map Controls (Instruments) -->
                 <div class="map-controls">
                     <div class="floor-selector">
-                        <span style="font-family: var(--font-sans); font-size: 0.8rem; margin-right: 0.5rem; color: #666;">LAYERS:</span>
+                        <span
+                            style="font-family: var(--font-sans); font-size: 0.8rem; margin-right: 0.5rem; color: #666;">LAYERS:</span>
                         <button class="floor-btn active" data-floor="1" id="floor1Btn">Level 1</button>
                         <button class="floor-btn" data-floor="2" id="floor2Btn">Level 2</button>
                     </div>
-                    
+
                     <div class="zoom-controls">
                         <button class="zoom-btn" id="zoomInBtn">+</button>
                         <button class="zoom-btn" id="zoomOutBtn">−</button>
                     </div>
                 </div>
-                
+
                 <!-- Map Container -->
                 <div class="map-container" id="mapContainer">
                     <div class="map-wrapper" id="mapWrapper">
                         <!-- SVG maps loaded here -->
                     </div>
                 </div>
-                
+
             </section>
-            
+
         </main>
-        
+
         <!-- Loading Overlay -->
-        <div class="loading-screen" id="loadingScreen" style="position: fixed; top:0; left:0; width:100%; height:100%; background:white; display:flex; align-items:center; justify-content:center; z-index:9999;">
+        <div class="loading-screen" id="loadingScreen"
+            style="position: fixed; top:0; left:0; width:100%; height:100%; background:white; display:flex; align-items:center; justify-content:center; z-index:9999;">
             <div style="text-align:center;">
-                <div class="loading-spinner" style="border: 2px solid #f3f3f3; border-top: 2px solid #005bbb; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite;"></div>
+                <div class="loading-spinner"
+                    style="border: 2px solid #f3f3f3; border-top: 2px solid #005bbb; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite;">
+                </div>
                 <p>Retrieving Spatial Data...</p>
             </div>
-            <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+            <style>
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+            </style>
         </div>
-        
+
         <!-- Error Overlay -->
-        <div class="error-screen" id="errorScreen" style="display: none; position: fixed; top:20px; right:20px; background: #e56a54; color: white; padding: 1rem; border-radius: 4px;">
-             <strong>System Error:</strong> Unable to load map data.
-             <button id="retryButton" style="margin-left:1rem; border:1px solid white; background:none; color:white; cursor:pointer;">Retry</button>
+        <div class="error-screen" id="errorScreen"
+            style="display: none; position: fixed; top:20px; right:20px; background: #e56a54; color: white; padding: 1rem; border-radius: 4px;">
+            <strong>System Error:</strong> Unable to load map data.
+            <button id="retryButton"
+                style="margin-left:1rem; border:1px solid white; background:none; color:white; cursor:pointer;">Retry</button>
         </div>
-        
+
     </div>
 
     <!-- Custom JavaScript -->
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
+
 </html>

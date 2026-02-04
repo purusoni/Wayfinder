@@ -7,7 +7,7 @@
     /* UB Primary Palette */
     --ub-blue: #005bbb;
     --hayes-hall-white: #ffffff;
-    
+
     /* UB Secondary Palette */
     --letchworth-autumn: #e56a54;
     --solar-strand: #ffc72c;
@@ -21,20 +21,25 @@
     --harriman-blue: #002f56;
     --baird-point: #e4e4e4;
     --putnam-gray: #666666;
-    
+
     /* Functional Semantic Variables */
-    --color-text-body: #222222;        /* Near black for readability */
+    --color-text-body: #222222;
+    /* Near black for readability */
     --color-text-header: #000000;
     --color-link: var(--ub-blue);
     --color-accent: var(--ub-blue);
-    --color-border: #000000;           /* Stark black borders */
-    --color-background-page: var(--hayes-hall-white); /* The "Paper" */
-    --color-background-app: var(--baird-point);   /* The "Desk" */
-    
+    --color-border: #000000;
+    /* Stark black borders */
+    --color-background-page: var(--hayes-hall-white);
+    /* The "Paper" */
+    --color-background-app: var(--baird-point);
+    /* The "Desk" */
+
     /* Typography */
     --font-serif: 'Lora', 'Times New Roman', Times, serif;
-    --font-sans: 'Open Sans', Helvetica, Arial, sans-serif; /* Captions/Figures */
-    
+    --font-sans: 'Open Sans', Helvetica, Arial, sans-serif;
+    /* Captions/Figures */
+
     /* Layout */
     --paper-width: 1200px;
     --spacing-std: 1rem;
@@ -62,8 +67,9 @@ body {
     max-width: var(--paper-width);
     margin: 0 auto;
     background-color: var(--color-background-page);
-    padding: 3rem 4rem; /* Wide margins like a paper */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 3rem 4rem;
+    /* Wide margins like a paper */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border: 1px solid #d1d1d1;
     min-height: 90vh;
 }
@@ -78,7 +84,8 @@ body {
 }
 
 .controls-panel {
-    flex: 0 0 350px; /* Sidebar width */
+    flex: 0 0 350px;
+    /* Sidebar width */
     border-right: 1px solid #ddd;
     padding-right: 2rem;
 }
@@ -121,7 +128,8 @@ body {
 }
 
 /* Abstract / Section Headers */
-.section-title, .route-title {
+.section-title,
+.route-title {
     font-family: var(--font-serif);
     font-weight: 700;
     font-size: 1.2rem;
@@ -158,7 +166,8 @@ body {
 .search-input:focus {
     border-bottom-color: var(--ub-blue);
     outline: none;
-    background: rgba(0, 91, 187, 0.05); /* faint blue tint */
+    background: rgba(0, 91, 187, 0.05);
+    /* faint blue tint */
 }
 
 .search-button {
@@ -181,7 +190,7 @@ body {
     background: white;
     border: 1px solid var(--putnam-gray);
     z-index: 100;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .suggestion-item {
@@ -224,7 +233,8 @@ body {
 
 .category-icon {
     margin-right: 0.5rem;
-    filter: sepia(100%) hue-rotate(190deg) saturate(500%); /* Blue-ish tint */
+    filter: sepia(100%) hue-rotate(190deg) saturate(500%);
+    /* Blue-ish tint */
 }
 
 /* ==========================================================================
@@ -240,6 +250,24 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    /* Ensure panzoom doesn't spill over */
+}
+
+.map-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-svg {
+    max-width: 100%;
+    max-height: 100%;
+    /* Ensure it doesn't collapse */
+    width: 100%;
+    height: auto;
 }
 
 /* Caption style for the map */
@@ -247,7 +275,8 @@ body {
     content: "Fig. 1. Spatial representation of Level " attr(data-active-floor) ". Interactive navigation elements are highlighted.";
     display: block;
     text-align: center;
-    font-family: var(--font-sans); /* Captions often sans in serif papers */
+    font-family: var(--font-sans);
+    /* Captions often sans in serif papers */
     font-size: 0.9rem;
     color: var(--putnam-gray);
     margin-top: 1rem;
@@ -302,7 +331,8 @@ body {
    ========================================================================== */
 .directions-list {
     margin-top: 1rem;
-    counter-reset: step-counter; /* CSS Counters for 1, 2, 3... */
+    counter-reset: step-counter;
+    /* CSS Counters for 1, 2, 3... */
 }
 
 .direction-step {
@@ -392,11 +422,11 @@ body {
         box-shadow: none;
         border: none;
     }
-    
+
     .app-main {
         flex-direction: column;
     }
-    
+
     .controls-panel {
         flex: auto;
         border-right: none;
@@ -404,8 +434,83 @@ body {
         padding-right: 0;
         padding-bottom: 2rem;
     }
-    
+
     .map-container {
         min-height: 400px;
     }
+}
+/* Map Animations & Marker Styles */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2); /* Sligthly larger pulse */
+    opacity: 0.9;
+  }
+}
+
+.route-start, .route-end {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ==========================================================================
+   Map SVG Overrides - "Technical Figure" Style
+   ========================================================================== */
+.map-svg .floor-background {
+    fill: #ffffff !important;
+}
+
+.map-svg .room-fill,
+.map-svg .special-fill {
+    fill: #ffffff !important;
+    filter: none !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+}
+
+.map-svg .wall-stroke {
+    stroke: #000000 !important;
+    stroke-width: 1.5px !important;
+}
+
+/* Typography inside the map */
+.map-svg text,
+.map-svg .text-primary,
+.map-svg .text-secondary,
+.map-svg .text-special {
+    font-family: var(--font-sans) !important;
+    fill: #000000 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.map-svg .text-secondary {
+    font-weight: 400 !important;
+    font-size: 0.8em !important; 
+    fill: #333333 !important; /* Slightly lighter for hierarchy */
+    text-transform: none;
+}
+
+/* Default Markers (inactive) */
+.map-svg .destination-marker,
+.map-svg .stairs-marker {
+    fill: #ffffff !important;
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+}
+
+/* The 'You Are Here' Kiosk (static) */
+.map-svg .kiosk-marker {
+    fill: #000000 !important;
+    stroke: none !important;
 }

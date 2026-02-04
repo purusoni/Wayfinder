@@ -44,83 +44,61 @@
   <rect x="0" y="0" width="800" height="600" class="floor-background"/>
   
   <!-- CSS for theme switching -->
-  <style>
-    .floor-background { fill: url(#floor1PatternLight); }
-    .room-fill { fill: url(#roomGradientLight); filter: url(#shadowLight); }
-    .wall-stroke { stroke: #64748b; stroke-width: 3; }
-    .text-primary { fill: #1e3a8a; font-family: 'Inter', -apple-system, sans-serif; font-weight: 600; }
-    .text-secondary { fill: #64748b; font-family: 'Inter', -apple-system, sans-serif; font-weight: 500; }
-    .destination-marker { fill: url(#accentGradient); }
-    .kiosk-marker { fill: #06d6a0; }
-    
-    @media (prefers-color-scheme: dark) {
-      .floor-background { fill: url(#floor1PatternDark); }
-      .room-fill { fill: url(#roomGradientDark); filter: url(#shadowDark); }
-      .wall-stroke { stroke: #475569; stroke-width: 3; }
-      .text-primary { fill: #3b82f6; }
-      .text-secondary { fill: #94a3b8; }
-    }
-  </style>
+
   
   <!-- Outer Building Shell -->
-  <rect x="60" y="120" width="680" height="360" fill="none" class="wall-stroke" rx="8"/>
+  <rect x="60" y="120" width="680" height="360" fill="none" class="wall-stroke" />
   
   <!-- Main Entrance Area -->
-  <rect x="70" y="130" width="130" height="340" class="room-fill wall-stroke" rx="6"/>
+  <rect x="70" y="130" width="130" height="340" class="room-fill wall-stroke" />
   <text x="135" y="160" text-anchor="middle" class="text-primary" font-size="14">Main Entrance</text>
   <text x="135" y="180" text-anchor="middle" class="text-secondary" font-size="11">Public Access</text>
   
   <!-- Kiosk Position -->
   <circle id="F1_KIOSK_A" cx="135" cy="300" r="12" class="kiosk-marker" stroke="#ffffff" stroke-width="2"/>
-  <rect x="125" y="320" width="20" height="15" class="kiosk-marker" rx="2"/>
+  <rect x="125" y="320" width="20" height="15" class="kiosk-marker" />
   <text x="135" y="345" text-anchor="middle" class="text-primary" font-size="10" font-weight="bold">YOU ARE HERE</text>
   
   <!-- Circulation & Service Desk -->
-  <rect x="220" y="320" width="180" height="120" class="room-fill wall-stroke" rx="6"/>
+  <rect x="220" y="320" width="180" height="120" class="room-fill wall-stroke" />
   <text x="310" y="350" text-anchor="middle" class="text-primary" font-size="13">Circulation Desk</text>
   <text x="310" y="370" text-anchor="middle" class="text-secondary" font-size="10">Check-out • Returns • Help</text>
   <circle id="F1_CIRC_DEST" cx="310" cy="390" r="6" class="destination-marker"/>
   <text x="310" y="410" text-anchor="middle" class="text-secondary" font-size="9">Service Counter</text>
   
   <!-- Computer Lab -->
-  <rect x="520" y="320" width="160" height="120" class="room-fill wall-stroke" rx="6"/>
+  <rect x="520" y="320" width="160" height="120" class="room-fill wall-stroke" />
   <text x="600" y="350" text-anchor="middle" class="text-primary" font-size="13">Computer Lab 1A</text>
   <text x="600" y="370" text-anchor="middle" class="text-secondary" font-size="10">Public Computing</text>
   <!-- Computer icons -->
-  <rect x="570" y="380" width="12" height="8" fill="#64748b" rx="1"/>
-  <rect x="590" y="380" width="12" height="8" fill="#64748b" rx="1"/>
-  <rect x="610" y="380" width="12" height="8" fill="#64748b" rx="1"/>
+  <rect x="570" y="380" width="12" height="8" fill="#64748b" />
+  <rect x="590" y="380" width="12" height="8" fill="#64748b" />
+  <rect x="610" y="380" width="12" height="8" fill="#64748b" />
   <circle id="F1_COMP_DEST" cx="600" cy="400" r="6" class="destination-marker"/>
   
   <!-- Main Staircase -->
-  <rect x="420" y="170" width="80" height="80" class="room-fill wall-stroke" rx="6"/>
+  <rect x="420" y="170" width="80" height="80" class="room-fill wall-stroke" />
   <text x="460" y="195" text-anchor="middle" class="text-primary" font-size="12">Stairs</text>
-  <text x="460" y="210" text-anchor="middle" class="text-primary" font-size="18">⬆</text>
+
   <text x="460" y="230" text-anchor="middle" class="text-secondary" font-size="9">to Floor 2</text>
   <circle id="F1_STAIRS_DEST" cx="460" cy="210" r="6" class="destination-marker"/>
   
   <!-- Restrooms -->
-  <rect x="600" y="170" width="80" height="70" class="room-fill wall-stroke" rx="6"/>
-  <text x="640" y="195" text-anchor="middle" class="text-primary" font-size="12">Restrooms</text>
-  <text x="640" y="215" text-anchor="middle" class="text-primary" font-size="16">🚻</text>
-  <circle id="F1_RESTROOM_DEST" cx="640" cy="205" r="6" class="destination-marker"/>
+  <rect x="600" y="170" width="100" height="70" class="room-fill wall-stroke" />
+  <text x="650" y="195" text-anchor="middle" class="text-primary" font-size="12">Restrooms</text>
+
+  <circle id="F1_RESTROOM_DEST" cx="650" cy="205" r="6" class="destination-marker"/>
   
   <!-- Reading Areas -->
-  <rect x="220" y="170" width="140" height="120" fill="none" class="wall-stroke" stroke-dasharray="8,4" rx="6"/>
+  <rect x="220" y="170" width="140" height="120" fill="none" class="wall-stroke" stroke-dasharray="8,4" />
   <text x="290" y="195" text-anchor="middle" class="text-secondary" font-size="11">Quiet Reading</text>
-  <text x="270" y="220" text-anchor="middle" class="text-secondary" font-size="14">📖</text>
-  <text x="310" y="220" text-anchor="middle" class="text-secondary" font-size="14">🪑</text>
-  <text x="270" y="245" text-anchor="middle" class="text-secondary" font-size="14">📚</text>
-  <text x="310" y="245" text-anchor="middle" class="text-secondary" font-size="14">🪑</text>
+
   
   <!-- Book Collection Stacks -->
-  <rect x="520" y="170" width="60" height="120" fill="none" class="wall-stroke" stroke-dasharray="8,4" rx="6"/>
+  <rect x="520" y="170" width="60" height="120" fill="none" class="wall-stroke" stroke-dasharray="8,4" />
   <text x="550" y="195" text-anchor="middle" class="text-secondary" font-size="10">General</text>
   <text x="550" y="210" text-anchor="middle" class="text-secondary" font-size="10">Collection</text>
-  <text x="540" y="235" text-anchor="middle" class="text-secondary" font-size="12">📚</text>
-  <text x="560" y="235" text-anchor="middle" class="text-secondary" font-size="12">📚</text>
-  <text x="540" y="255" text-anchor="middle" class="text-secondary" font-size="12">📚</text>
-  <text x="560" y="255" text-anchor="middle" class="text-secondary" font-size="12">📚</text>
+
   
   <!-- Navigation Paths (for route highlighting) -->
   <path id="F1_KIOSK_A-F1_CIRC_DESK" d="M 147 300 L 220 300 L 290 300 L 290 320" 
@@ -141,14 +119,14 @@
   
   <!-- Modern Floor Label -->
   <g transform="translate(650, 520)">
-    <rect x="0" y="0" width="120" height="40" class="room-fill wall-stroke" rx="8"/>
+    <rect x="0" y="0" width="120" height="40" class="room-fill wall-stroke" />
     <text x="60" y="18" text-anchor="middle" class="text-primary" font-size="16" font-weight="bold">FLOOR</text>
     <text x="60" y="32" text-anchor="middle" class="text-primary" font-size="18" font-weight="bold">1</text>
   </g>
   
   <!-- Enhanced Legend -->
   <g transform="translate(70, 490)">
-    <rect x="0" y="0" width="160" height="60" class="room-fill wall-stroke" rx="6"/>
+    <rect x="0" y="0" width="220" height="60" class="room-fill wall-stroke" />
     <text x="10" y="18" class="text-primary" font-size="11" font-weight="bold">Legend</text>
     <circle cx="15" cy="32" r="4" class="kiosk-marker"/>
     <text x="28" y="36" class="text-secondary" font-size="9">Current Location</text>

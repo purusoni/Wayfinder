@@ -1,227 +1,101 @@
-# 🧭 Lockwood Library Wayfinder
+# 🧭 Lockwood Library Wayfinder (Proto)
 
-An interactive wayfinding kiosk prototype for library navigation with modern UI, dark mode support, and mobile handoff capabilities.
+**Vol 1.0 • Spatial Navigation System**
+
+A "Scientific Journal" styled wayfinding kiosk for Lockwood Library, strictly adhering to the University at Buffalo brand identity. This prototype mimics the aesthetic of an academic paper, treating navigation as a "Methodology" and "Figure" analysis.
 
 ## 📋 Overview
 
-This prototype demonstrates a comprehensive wayfinding solution designed for library kiosks. Users can search for destinations, view interactive floor maps with highlighted routes, follow turn-by-turn directions, and continue navigation on their mobile devices via QR code.
+Users interact with a "Research Paper" interface to find destinations within the library. The application features a modular JavaScript architecture, SVG-based interactive maps ("Figure 1"), and seamless mobile handoff via QR codes.
 
 ## ✨ Features
 
-### 🎨 Modern Interface
-- **Dark mode support** - Automatically adapts to system preferences
-- **Smooth animations** - Entrance effects and micro-interactions throughout
-- **Responsive design** - Works on kiosk displays and mobile devices
-- **Professional SVG maps** - High-quality floor plans with theme awareness
+### 🏛️ "Scientific Journal" Aesthetic
+- **Visuals**: Serif typography (`Lora`, `Times`), "Paper" on "Desk" layout.
+- **Brand**: Strict use of **UB Blue** (`#005bbb`), **Putnam Gray**, and **Solar Strand** accent.
+- **Metaphors**: 
+    - **Header**: Abstract/Title.
+    - **Search**: "Methodology" / "Parameters".
+    - **Map**: "Figure 1: Spatial Representation".
+    - **Directions**: "Results" / "Analysis".
 
-### 🔍 Smart Search
-- **Intelligent autocomplete** - Finds matches anywhere in destination names
-- **Pattern recognition** - Handles room codes like "2B", "1A"
-- **Fuzzy matching** - Tolerates minor typos
-- **Visual highlighting** - Shows matched terms in search results
+### 🔍 Search & Navigation
+- **Fuzzy Search**: Tolerates typos and partial matches (e.g., "restrm").
+- **SVG Map Integration**: Interactive Pan/Zoom map using `Panzoom` library.
+- **Route Visualization**: Golden dashed lines (`Solar Strand`) animating across the floor plan.
+- **Multi-Floor Support**: Seamless switching between Levels 1 and 2.
 
-### 🗺️ Interactive Navigation
-- **Route highlighting** - Animated dashed paths on floor maps
-- **Multi-floor support** - Seamless navigation between floors
-- **Turn-by-turn directions** - Step-by-step guidance with landmarks
-- **Pan and zoom** - Interactive map exploration
+### 📱 Mobile Handoff
+- **QR Code Generation**: Instantly creates a "Figure 1a" QR code for the current route.
+- **Deep Linking**: Supports `?dest={ID}` parameters for immediate route loading on mobile.
+- **Auto-Config**: The `launch.sh` script automatically detects the local IP to ensure QR codes work for mobile devices on the same network.
 
-### 📱 Mobile Integration
-- **QR code handoff** - Continue navigation on mobile device
-- **Scroll-based floor switching** - Automatic floor changes on mobile
-- **Touch-friendly controls** - Optimized for mobile interaction
-- **Marketing-focused QR messaging** - "Take with you" call-to-action
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge, etc.)
-- Local web server (Python, Node.js, or similar)
-- Network access for mobile handoff functionality
+- Python 3 (presinstalled on most Linux/Mac systems)
+- A modern web browser
 
-### Setup Instructions
+### One-Step Launch
+We provide a helper script to auto-configure the network address (crucial for QR codes).
 
-1. **Clone or download** the project files to your local machine
-
-2. **⚠️ IMPORTANT: Configure Network Address**
-   
-   Before running, you **must** update the network address in `app.js`:
-   
-   ```javascript
-   // In app.js, line ~25
-   this.config = {
-       apiBaseUrl: 'http://10.84.159.205:8080', // ← Change this IP address
-       // ...
-   };
-   ```
-   
-   **Why you need to change this:**
-   - The current IP address (`10.84.159.205`) is specific to the original development environment
-   - Each team member's local network has different IP ranges
-   - For local development, use `http://localhost:8080` or `http://127.0.0.1:8080`
-   - For mobile handoff to work, use your machine's local network IP (find with `ipconfig` on Windows or `ifconfig` on Mac/Linux)
-
-3. **Start a local web server** in the project directory:
-
-   ```bash
-   # Python 3
-   python -m http.server 8080
-   
-   # Python 2
-   python -m SimpleHTTPServer 8080
-   
-   # Node.js (if you have http-server installed)
-   npx http-server -p 8080
-   
-   # PHP
-   php -S localhost:8080
-   ```
-
-4. **Open your browser** and navigate to:
-   - `http://localhost:8080` (for local testing)
-   - `http://YOUR_IP_ADDRESS:8080` (for mobile handoff functionality)
-
-## 🏗️ Project Structure
-
-```
-Wayfinder/
-├── index.html          # Main HTML structure
-├── style.css           # Styling with dark mode support
-├── app.js              # Core application logic
-├── assets/
-│   ├── floor1.svg      # Floor 1 interactive map
-│   ├── floor2.svg      # Floor 2 interactive map
-│   └── data.json       # Navigation data and routes
-├── libs/
-│   └── qrcode.min.js   # QR code generation library
-└── README.md           # This file
+```bash
+cd WayfinderProto
+./launch.sh
 ```
 
-## 🔧 Configuration
-
-### Network Setup for Mobile Handoff
-
-1. **Find your local IP address:**
-   ```bash
-   # Windows
-   ipconfig
-   
-   # Mac/Linux
-   ifconfig | grep inet
-   ```
-
-2. **Update the IP address** in `app.js`:
-   ```javascript
-   apiBaseUrl: 'http://YOUR_IP_ADDRESS:8080'
-   ```
-
-3. **Enable mobile device access:**
-   - Mobile devices can access via `http://YOUR_IP_ADDRESS:8080`
-   - Ensure firewall allows connections on port 8080
-   - All devices must be on the same local network
-
-### Customization Options
-
-#### Adding New Destinations
-Edit `assets/data.json` to add new destinations:
-```json
-{
-  "id": "NEW_DEST",
-  "name": "New Destination",
-  "type": "destination",
-  "floor": 1,
-  "search_keywords": ["keyword1", "keyword2"]
-}
-```
-
-#### Modifying Floor Maps
-- Edit `assets/floor1.svg` and `assets/floor2.svg`
-- Maintain CSS class structure for dark mode compatibility
-- Ensure path IDs match those referenced in route data
-
-## 🎮 Usage Guide
-
-### For End Users (Kiosk Interface)
-1. **Search** for a destination using the search bar
-2. **Select** from autocomplete suggestions
-3. **View** highlighted route on the interactive map
-4. **Follow** turn-by-turn directions
-5. **Scan QR code** to continue on mobile device
-
-### For Developers
-- **Responsive testing**: Resize browser to test mobile behavior
-- **Dark mode testing**: Toggle system dark mode to test themes
-- **Route debugging**: Check browser console for route generation logs
-- **SVG editing**: Use vector graphics editor for map modifications
-
-## 🌐 Browser Support
-
-- **Chrome/Edge**: Full support with all features
-- **Firefox**: Full support with all features  
-- **Safari**: Full support with all features
-- **Mobile browsers**: Optimized experience with touch interactions
-
-## 🎯 Technical Features
-
-### Dark Mode Implementation
-- CSS custom properties for theme switching
-- Automatic system preference detection
-- SVG-embedded CSS for map theming
-- Seamless transitions between modes
-
-### Mobile Optimization
-- Intersection Observer for scroll-based navigation
-- Touch-friendly interface elements
-- Responsive SVG scaling
-- QR code mobile handoff
-
-### Performance Features
-- Debounced search input (150ms)
-- Efficient DOM element caching
-- Minimal re-renders with state management
-- Optimized SVG rendering
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-**QR Code Not Working**
-- Ensure QRCode library is loaded (`libs/qrcode.min.js`)
-- Check that the target URL is accessible
-
-**Maps Not Loading**
-- Verify SVG files are in `assets/` directory
-- Check browser console for loading errors
-- Ensure web server has proper MIME types for SVG
-
-**Search Not Working**
-- Check that `assets/data.json` is accessible
-- Verify JSON syntax is valid
-- Check browser console for parsing errors
-
-**Network Access Issues**
-- Verify firewall settings allow port 8080
-- Ensure all devices are on same local network
-- Try different IP address or use localhost for local testing
-
-## 👥 Team Development
-
-### Best Practices
-- Test on different screen sizes and devices
-- Verify dark mode compatibility for any new features
-- Maintain SVG path IDs when editing maps
-- Keep route data synchronized with map changes
-
-### Contributing
-1. Make changes in a development branch
-2. Test across different browsers and devices
-3. Verify both light and dark mode functionality
-4. Update documentation for any new features
-
-## 📄 License
-
-This is a prototype for internal team use. Please check with your organization's policies before external distribution.
+This will:
+1. Detect your local IP address.
+2. Update `app.js` configuration automatically.
+3. Start a local Python HTTP server.
+4. Print the Access URL (e.g., `http://10.84.X.X:3000`).
 
 ---
 
-**Need Help?** Contact the development team or check the browser console for debugging information.
+## 🏗️ Project Structure
+
+Refactored into a modular ES6 architecture for maintainability.
+
+```
+WayfinderProto/
+├── index.html          # Main application entry (ES Modules enabled)
+├── style.css           # "Scientific Journal" Theme (UB Brand Colors)
+├── app.js              # Main Orchestrator (Controller)
+├── launch.sh           # Auto-config and server launch script
+├── js/                 # Modular Logic
+│   ├── map.js          # SVG rendering, Panzoom, & Route highlighting
+│   ├── search.js       # Search algorithms & fuzzy matching
+│   └── utils.js        # Helper functions (debounce, etc.)
+├── assets/
+│   ├── floor1.svg      # Level 1 Map Data
+│   └── floor2.svg      # Level 2 Map Data
+└── data/
+    └── library_graph.json # Node & Path database
+```
+
+## 🎨 Design Guidelines
+
+See [UI_DESIGN_BRIEF.md](./UI_DESIGN_BRIEF.md) for the complete style guide.
+
+- **Primary Color**: UB Blue (`#005bbb`)
+- **Accent**: Solar Strand Gold (`#ffc72c`)
+- **Typography**: `Lora` (Serif) & `Open Sans` (Sans-Serif)
+
+## 🔧 Troubleshooting
+
+### Mobile Handoff Not Working?
+- Ensure your phone and computer are on the **same Wi-Fi network**.
+- Verify the IP address in the URL matches your computer's local IP.
+- Use `./launch.sh` to restart and auto-correct the IP.
+
+### Map Not Loading?
+- Ensure `assets/floor1.svg` exists.
+- Check the console for "Floor map not available" errors.
+- **Note**: The map is styled as a "Figure" inside a white box.
+
+---
+
+**University at Buffalo • Department of Computer Science & Engineering**
+*Prototype for CSE453*
