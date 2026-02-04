@@ -17,28 +17,28 @@ class WayfinderApp {
             panzoomInstance: null,
             isMobileView: window.innerWidth <= 768
         };
-        
+
         // DOM elements - will be populated in init()
         this.elements = {};
-        
+
         // Configuration
         this.config = {
-            apiBaseUrl: 'http://10.84.159.205:8080',
+            apiBaseUrl: 'http://10.84.49.143:3000', // Auto-configured by launch script
             defaultFloor: 1,
             qrCodeSize: 104, // Larger for better scanning
             searchDelay: 150, // Faster response for better UX
             maxSuggestions: 6
         };
-        
+
         // Bind methods to preserve context
         this.handleSearch = this.debounce(this.handleSearch.bind(this), this.config.searchDelay);
         this.handleKeydown = this.handleKeydown.bind(this);
         this.handleResize = this.debounce(this.handleResize.bind(this), 250);
-        
+
         // Initialize the application
         this.init();
     }
-    
+
     /**
      * Initialize the application
      */
@@ -51,14 +51,14 @@ class WayfinderApp {
             this.checkUrlParameters();
             this.setupMapInteraction();
             this.hideLoadingScreen();
-            
+
             console.log('Wayfinder app initialized successfully');
         } catch (error) {
             console.error('Failed to initialize wayfinder app:', error);
             this.showErrorScreen();
         }
     }
-    
+
     /**
      * Cache DOM elements for performance
      */
@@ -71,19 +71,19 @@ class WayfinderApp {
             'mapContainer', 'mapWrapper', 'floor1Btn', 'floor2Btn',
             'zoomInBtn', 'zoomOutBtn', 'qrHeaderSection', 'qrcode'
         ];
-        
+
         elementIds.forEach(id => {
             this.elements[id] = document.getElementById(id);
             if (!this.elements[id]) {
                 console.warn(`Element with ID '${id}' not found`);
             }
         });
-        
+
         // Cache category buttons
         this.elements.categoryBtns = document.querySelectorAll('.category-btn');
         this.elements.floorBtns = document.querySelectorAll('.floor-btn');
     }
-    
+
     /**
      * Load library data from JSON file
      */
@@ -100,7 +100,7 @@ class WayfinderApp {
             throw error;
         }
     }
-    
+
     /**
      * Load SVG floor maps
      */
@@ -108,29 +108,29 @@ class WayfinderApp {
         try {
             const floor1Response = await fetch('./assets/floor1.svg');
             const floor2Response = await fetch('./assets/floor2.svg');
-            
+
             if (!floor1Response.ok || !floor2Response.ok) {
                 throw new Error('Failed to load floor maps');
             }
-            
+
             const floor1Svg = await floor1Response.text();
             const floor2Svg = await floor2Response.text();
-            
+
             // Store SVG content for later use
             this.floorMaps = {
                 1: floor1Svg,
                 2: floor2Svg
             };
-            
+
             // Load initial floor (Floor 1 where kiosk is located)
             this.loadFloorMap(1);
-            
+
         } catch (error) {
             console.error('Error loading floor maps:', error);
             throw error;
         }
     }
-    
+
     /**
      * Setup all event listeners
      */
@@ -145,13 +145,13 @@ class WayfinderApp {
                 }
             });
         }
-        
+
         if (this.elements.searchButton) {
             this.elements.searchButton.addEventListener('click', () => {
                 this.handleSearchSubmit();
             });
         }
-        
+
         // Category buttons
         this.elements.categoryBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -159,7 +159,7 @@ class WayfinderApp {
                 this.handleCategorySelect(category);
             });
         });
-        
+
         // Floor selection
         this.elements.floorBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -167,7 +167,7 @@ class WayfinderApp {
                 this.switchFloor(floor);
             });
         });
-        
+
         // Zoom controls
         if (this.elements.zoomInBtn) {
             this.elements.zoomInBtn.addEventListener('click', () => this.zoomIn());
@@ -175,24 +175,24 @@ class WayfinderApp {
         if (this.elements.zoomOutBtn) {
             this.elements.zoomOutBtn.addEventListener('click', () => this.zoomOut());
         }
-        
+
         // Back button
         if (this.elements.backButton) {
             this.elements.backButton.addEventListener('click', () => {
                 this.showSelectionView();
             });
         }
-        
+
         // Retry button
         if (this.elements.retryButton) {
             this.elements.retryButton.addEventListener('click', () => {
                 location.reload();
             });
         }
-        
+
         // Window resize
         window.addEventListener('resize', this.handleResize);
-        
+
         // Close suggestions when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.search-section')) {
@@ -200,26 +200,26 @@ class WayfinderApp {
             }
         });
     }
-    
+
     /**
      * Handle search input with autocomplete
      */
     handleSearch(e) {
         const query = e.target.value.trim().toLowerCase();
-        
+
         if (query.length === 0) {
             this.hideSuggestions();
             return;
         }
-        
+
         if (query.length < 1) {
             return; // Wait for at least 1 character
         }
-        
+
         const suggestions = this.searchDestinations(query);
         this.displaySuggestions(suggestions);
     }
-    
+
     /**
      * Handle keyboard navigation in search
      */
@@ -227,8 +227,8 @@ class WayfinderApp {
         const suggestions = this.elements.autocompleteSuggestions;
         const items = suggestions.querySelectorAll('.suggestion-item');
         const highlighted = suggestions.querySelector('.suggestion-item.highlighted');
-        
-        switch(e.key) {
+
+        switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
                 if (highlighted) {
@@ -239,7 +239,7 @@ class WayfinderApp {
                     items[0].classList.add('highlighted');
                 }
                 break;
-                
+
             case 'ArrowUp':
                 e.preventDefault();
                 if (highlighted) {
@@ -250,7 +250,7 @@ class WayfinderApp {
                     items[items.length - 1].classList.add('highlighted');
                 }
                 break;
-                
+
             case 'Enter':
                 e.preventDefault();
                 if (highlighted) {
@@ -259,30 +259,30 @@ class WayfinderApp {
                     this.handleSearchSubmit();
                 }
                 break;
-                
+
             case 'Escape':
                 this.hideSuggestions();
                 this.elements.searchInput.blur();
                 break;
         }
     }
-    
+
     /**
      * Search destinations based on query
      */
     searchDestinations(query) {
         if (!this.state.libraryData) return [];
-        
+
         const results = [];
         const queryLower = query.toLowerCase().trim();
-        
+
         this.state.libraryData.nodes.forEach(node => {
             if (node.type !== 'destination') return;
-            
+
             let score = 0;
             const nameLower = node.name.toLowerCase();
             const nameWords = nameLower.split(/\s+/);
-            
+
             // 1. Exact name match gets highest score
             if (nameLower === queryLower) {
                 score = 100;
@@ -303,7 +303,7 @@ class WayfinderApp {
             else if (this.hasPartialWordMatch(nameLower, queryLower)) {
                 score = 80;
             }
-            
+
             // 6. Check keywords for matches
             if (node.search_keywords) {
                 let keywordScore = 0;
@@ -319,7 +319,7 @@ class WayfinderApp {
                 });
                 score = Math.max(score, keywordScore);
             }
-            
+
             // 7. For short queries (1-3 chars), be more permissive with substring matching
             if (queryLower.length <= 3 && score === 0) {
                 // Check if any word in the name contains the query
@@ -327,30 +327,30 @@ class WayfinderApp {
                 if (wordContainsQuery) {
                     score = 75; // Good score for short substring matches
                 }
-                
+
                 // Also check if the full name contains the query (if not already matched)
                 if (score === 0 && nameLower.includes(queryLower)) {
                     score = 70;
                 }
             }
-            
+
             // 8. Check for number/letter patterns (like "2B", "1A", etc.)
             if (this.matchesPattern(queryLower)) {
                 const patternScore = this.getPatternMatchScore(nameLower, queryLower);
                 score = Math.max(score, patternScore);
             }
-            
+
             // 9. Fuzzy matching for slight typos
             if (score === 0 && queryLower.length >= 3) {
                 const fuzzyScore = this.getFuzzyMatchScore(nameLower, queryLower);
                 score = Math.max(score, fuzzyScore);
             }
-            
+
             if (score > 0) {
                 results.push({ node, score, matchInfo: this.getMatchInfo(node, queryLower) });
             }
         });
-        
+
         // Sort by score and limit results
         return results
             .sort((a, b) => {
@@ -362,7 +362,7 @@ class WayfinderApp {
             .slice(0, this.config.maxSuggestions)
             .map(result => result.node);
     }
-    
+
     /**
      * Check for partial word matches (handles cases like "2B" matching "Room 2B")
      */
@@ -373,8 +373,8 @@ class WayfinderApp {
             if (word.includes(query)) {
                 // If query is short (1-2 chars), it should be at word boundaries
                 if (query.length <= 2) {
-                    return word.startsWith(query) || word.endsWith(query) || 
-                           /\d/.test(query); // Allow number matches anywhere
+                    return word.startsWith(query) || word.endsWith(query) ||
+                        /\d/.test(query); // Allow number matches anywhere
                 }
                 // For longer queries, any substring match is valid
                 return true;
@@ -382,7 +382,7 @@ class WayfinderApp {
             return false;
         });
     }
-    
+
     /**
      * Check if query matches common patterns (numbers, room codes, etc.)
      */
@@ -390,14 +390,14 @@ class WayfinderApp {
         // Match patterns like: 2B, 1A, 214, etc.
         return /^[0-9]+[A-Za-z]*$/.test(query) || /^[A-Za-z]+[0-9]+[A-Za-z]*$/.test(query);
     }
-    
+
     /**
      * Get pattern match score for room codes, numbers, etc.
      */
     getPatternMatchScore(text, query) {
         // Look for exact pattern matches in the text
         const patterns = text.match(/[0-9]+[A-Za-z]*|[A-Za-z]+[0-9]+[A-Za-z]*/g) || [];
-        
+
         for (const pattern of patterns) {
             if (pattern.toLowerCase() === query) {
                 return 85; // High score for exact pattern match
@@ -408,7 +408,7 @@ class WayfinderApp {
         }
         return 0;
     }
-    
+
     /**
      * Simple fuzzy matching for typos
      */
@@ -416,36 +416,36 @@ class WayfinderApp {
         // Calculate Levenshtein distance for fuzzy matching
         const words = text.split(/\s+/);
         let bestScore = 0;
-        
+
         words.forEach(word => {
             if (Math.abs(word.length - query.length) <= 2) {
                 const distance = this.levenshteinDistance(word, query);
                 const maxLength = Math.max(word.length, query.length);
                 const similarity = (maxLength - distance) / maxLength;
-                
+
                 if (similarity >= 0.7) { // 70% similarity threshold
                     bestScore = Math.max(bestScore, Math.floor(similarity * 60));
                 }
             }
         });
-        
+
         return bestScore;
     }
-    
+
     /**
      * Calculate Levenshtein distance between two strings
      */
     levenshteinDistance(str1, str2) {
         const matrix = [];
-        
+
         for (let i = 0; i <= str2.length; i++) {
             matrix[i] = [i];
         }
-        
+
         for (let j = 0; j <= str1.length; j++) {
             matrix[0][j] = j;
         }
-        
+
         for (let i = 1; i <= str2.length; i++) {
             for (let j = 1; j <= str1.length; j++) {
                 if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
@@ -459,26 +459,26 @@ class WayfinderApp {
                 }
             }
         }
-        
+
         return matrix[str2.length][str1.length];
     }
-    
+
     /**
      * Get match information for displaying in suggestions
      */
     getMatchInfo(node, query) {
         const nameLower = node.name.toLowerCase();
         const queryLower = query.toLowerCase();
-        
+
         if (nameLower.includes(queryLower)) {
             return {
                 type: 'name',
                 matchedText: query
             };
         }
-        
+
         if (node.search_keywords) {
-            const matchedKeyword = node.search_keywords.find(keyword => 
+            const matchedKeyword = node.search_keywords.find(keyword =>
                 keyword.toLowerCase().includes(queryLower)
             );
             if (matchedKeyword) {
@@ -488,31 +488,31 @@ class WayfinderApp {
                 };
             }
         }
-        
+
         return { type: 'other' };
     }
-    
+
     /**
      * Display search suggestions
      */
     displaySuggestions(suggestions) {
         const container = this.elements.autocompleteSuggestions;
-        
+
         if (suggestions.length === 0) {
             this.hideSuggestions();
             return;
         }
-        
+
         container.innerHTML = '';
-        
+
         suggestions.forEach((node, index) => {
             const item = document.createElement('div');
             item.className = 'suggestion-item';
             item.dataset.nodeId = node.id;
-            
+
             // Highlight the search term in the name
             const highlightedName = this.highlightSearchTerm(node.name, this.elements.searchInput.value);
-            
+
             item.innerHTML = `
                 <div class="suggestion-content">
                     <div class="suggestion-name">${highlightedName}</div>
@@ -522,33 +522,33 @@ class WayfinderApp {
                     </div>
                 </div>
             `;
-            
+
             item.addEventListener('click', () => {
                 this.selectDestination(node.id);
             });
-            
+
             container.appendChild(item);
         });
-        
+
         this.showSuggestions();
     }
-    
+
     /**
      * Highlight search term in suggestion name
      */
     highlightSearchTerm(name, searchTerm) {
         if (!searchTerm || searchTerm.length < 1) return name;
-        
+
         const regex = new RegExp(`(${this.escapeRegExp(searchTerm)})`, 'gi');
         return name.replace(regex, '<mark class="search-highlight">$1</mark>');
     }
-    
+
     /**
      * Get suggestion badge based on node type/category
      */
     getSuggestionBadge(node) {
         const keywords = node.search_keywords || [];
-        
+
         if (keywords.includes('restroom') || keywords.includes('bathroom')) {
             return '<span class="suggestion-badge">🚻</span>';
         }
@@ -561,24 +561,24 @@ class WayfinderApp {
         if (keywords.includes('special') || keywords.includes('archives')) {
             return '<span class="suggestion-badge">📜</span>';
         }
-        
+
         return '';
     }
-    
+
     /**
      * Escape special regex characters
      */
     escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
-    
+
     /**
      * Show suggestions dropdown
      */
     showSuggestions() {
         this.elements.autocompleteSuggestions.classList.add('show');
     }
-    
+
     /**
      * Hide suggestions dropdown
      */
@@ -589,45 +589,45 @@ class WayfinderApp {
             .querySelectorAll('.highlighted')
             .forEach(item => item.classList.remove('highlighted'));
     }
-    
+
     /**
      * Handle search form submission
      */
     handleSearchSubmit() {
         const query = this.elements.searchInput.value.trim();
         if (!query) return;
-        
+
         const suggestions = this.searchDestinations(query);
         if (suggestions.length > 0) {
             this.selectDestination(suggestions[0].id);
         }
     }
-    
+
     /**
      * Handle category selection
      */
     handleCategorySelect(category) {
         if (!this.state.libraryData) return;
-        
+
         const categoryMap = {
             'restroom': ['restroom', 'bathroom', 'wc'],
             'study': ['study', 'group room'],
             'computer': ['computer', 'lab', 'tech', 'printing']
         };
-        
+
         const keywords = categoryMap[category] || [];
         const matchingNodes = this.state.libraryData.nodes.filter(node => {
             if (node.type !== 'destination') return false;
-            
-            return keywords.some(keyword => 
-                node.search_keywords && 
-                node.search_keywords.some(sk => 
+
+            return keywords.some(keyword =>
+                node.search_keywords &&
+                node.search_keywords.some(sk =>
                     sk.toLowerCase().includes(keyword.toLowerCase())
                 ) ||
                 node.name.toLowerCase().includes(keyword.toLowerCase())
             );
         });
-        
+
         if (matchingNodes.length === 1) {
             // If only one match, select it directly
             this.selectDestination(matchingNodes[0].id);
@@ -637,7 +637,7 @@ class WayfinderApp {
             this.elements.searchInput.focus();
         }
     }
-    
+
     /**
      * Select a destination and generate route
      */
@@ -647,10 +647,10 @@ class WayfinderApp {
             console.error('Destination not found:', nodeId);
             return;
         }
-        
+
         this.state.selectedDestination = destination;
         this.hideSuggestions();
-        
+
         // Generate route
         const route = this.generateRoute('F1_KIOSK_A', nodeId);
         if (route) {
@@ -662,7 +662,7 @@ class WayfinderApp {
             // Could show an error message to the user here
         }
     }
-    
+
     /**
      * Generate route between two nodes
      */
@@ -671,47 +671,47 @@ class WayfinderApp {
             console.error('Library data or paths not available');
             return null;
         }
-        
+
         const routeKey = `${startId}-${endId}`;
         const route = this.state.libraryData.paths[routeKey];
-        
+
         if (!route) {
             console.error('No pre-calculated route found for:', routeKey);
             return null;
         }
-        
+
         return route;
     }
-    
+
     /**
      * Display route directions
      */
     displayRoute(route) {
         const container = this.elements.directionsList;
         const destination = this.state.selectedDestination;
-        
+
         // Update route header
         this.elements.routeTitle.textContent = `Directions to ${destination.name}`;
-        this.elements.routeDescription.textContent = 
+        this.elements.routeDescription.textContent =
             `From Main Entrance Kiosk to ${destination.name} (Floor ${destination.floor})`;
-        
+
         // Clear previous directions
         container.innerHTML = '';
-        
+
         // Add each step
         route.forEach((step, index) => {
             const stepElement = this.createDirectionStep(step, index + 1);
             container.appendChild(stepElement);
         });
-        
+
         // Generate QR code for mobile handoff (desktop only)
         if (!this.state.isMobileView) {
             this.generateQRCode();
         }
-        
+
         // Highlight route on map
         this.highlightRouteOnMap(route);
-        
+
         // Setup scroll-based floor switching for mobile
         if (this.state.isMobileView) {
             setTimeout(() => {
@@ -719,7 +719,7 @@ class WayfinderApp {
             }, 100); // Small delay to ensure DOM is ready
         }
     }
-    
+
     /**
      * Create a direction step element
      */
@@ -728,7 +728,7 @@ class WayfinderApp {
         stepDiv.className = 'direction-step';
         stepDiv.dataset.stepNumber = number;
         stepDiv.dataset.floor = step.floor || 1;
-        
+
         if (step.type === 'floor_change') {
             stepDiv.classList.add('floor-change-step');
             stepDiv.dataset.nextFloor = step.next_floor;
@@ -757,21 +757,21 @@ class WayfinderApp {
                 </div>
             `;
         }
-        
+
         // Set up scroll-based floor switching observation
         if (this.state.isMobileView && step.floor) {
             stepDiv.dataset.targetFloor = step.next_floor || step.floor;
         }
-        
+
         return stepDiv;
     }
-    
+
     /**
      * Setup scroll-based floor switching using Intersection Observer
      */
     setupScrollBasedFloorSwitching() {
         if (!this.state.isMobileView) return;
-        
+
         // Create intersection observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -779,7 +779,7 @@ class WayfinderApp {
                     const stepElement = entry.target;
                     const targetFloor = parseInt(stepElement.dataset.targetFloor);
                     const stepNumber = parseInt(stepElement.dataset.stepNumber);
-                    
+
                     if (targetFloor && targetFloor !== this.state.currentFloor) {
                         // Add a small delay to prevent rapid switching
                         clearTimeout(this.floorSwitchTimeout);
@@ -788,7 +788,7 @@ class WayfinderApp {
                             this.showFloorSwitchNotification(targetFloor);
                         }, 200);
                     }
-                    
+
                     // Highlight active step
                     this.highlightActiveStep(stepNumber);
                 }
@@ -797,16 +797,16 @@ class WayfinderApp {
             threshold: 0.5,
             rootMargin: '-20% 0px -20% 0px' // Only trigger when step is well within viewport
         });
-        
+
         // Observe all direction steps
         document.querySelectorAll('.direction-step[data-target-floor]').forEach(step => {
             observer.observe(step);
         });
-        
+
         // Store observer for cleanup
         this.scrollObserver = observer;
     }
-    
+
     /**
      * Highlight the active step
      */
@@ -815,14 +815,14 @@ class WayfinderApp {
         document.querySelectorAll('.direction-step.active').forEach(el => {
             el.classList.remove('active');
         });
-        
+
         // Add highlight to clicked step
         const activeStep = document.querySelector(`[data-step-number="${stepNumber}"]`);
         if (activeStep) {
             activeStep.classList.add('active');
         }
     }
-    
+
     /**
      * Show floor switch notification
      */
@@ -836,14 +836,14 @@ class WayfinderApp {
                 <span class="notification-text">Switching to Floor ${floor}</span>
             </div>
         `;
-        
+
         document.body.appendChild(notification);
-        
+
         // Animate in
         setTimeout(() => {
             notification.classList.add('show');
         }, 50);
-        
+
         // Remove after 2 seconds
         setTimeout(() => {
             notification.classList.remove('show');
@@ -854,23 +854,23 @@ class WayfinderApp {
             }, 300);
         }, 2000);
     }
-    
+
     /**
      * Switch between floor views
      */
     switchFloor(floor) {
         if (this.state.currentFloor === floor) return;
-        
+
         this.state.currentFloor = floor;
-        
+
         // Update active button
         this.elements.floorBtns.forEach(btn => {
             btn.classList.toggle('active', parseInt(btn.dataset.floor) === floor);
         });
-        
+
         // Load floor map
         this.loadFloorMap(floor);
-        
+
         // Re-highlight route if active
         if (this.state.currentRoute) {
             setTimeout(() => {
@@ -878,7 +878,7 @@ class WayfinderApp {
             }, 100);
         }
     }
-    
+
     /**
      * Load SVG map for specific floor
      */
@@ -887,10 +887,10 @@ class WayfinderApp {
             console.error('Floor map not available:', floor);
             return;
         }
-        
+
         const wrapper = this.elements.mapWrapper;
         wrapper.innerHTML = this.floorMaps[floor];
-        
+
         const svg = wrapper.querySelector('svg');
         if (svg) {
             svg.classList.add('map-svg');
@@ -900,19 +900,19 @@ class WayfinderApp {
             }, 50);
         }
     }
-    
+
     /**
      * Setup map pan/zoom interaction
      */
     setupMapInteraction() {
         const svg = this.elements.mapWrapper.querySelector('svg');
         if (!svg || !window.Panzoom) return;
-        
+
         // Destroy existing panzoom instance
         if (this.state.panzoomInstance) {
             this.state.panzoomInstance.destroy();
         }
-        
+
         // Create new panzoom instance
         this.state.panzoomInstance = Panzoom(svg, {
             maxScale: 3,
@@ -920,7 +920,7 @@ class WayfinderApp {
             contain: 'outside',
             cursor: 'grab'
         });
-        
+
         // Enable mouse wheel zooming
         svg.parentElement.addEventListener('wheel', (e) => {
             if (!e.ctrlKey) return;
@@ -928,7 +928,7 @@ class WayfinderApp {
             this.state.panzoomInstance.zoomWithWheel(e);
         });
     }
-    
+
     /**
      * Zoom in on map
      */
@@ -937,7 +937,7 @@ class WayfinderApp {
             this.state.panzoomInstance.zoomIn();
         }
     }
-    
+
     /**
      * Zoom out on map
      */
@@ -946,28 +946,28 @@ class WayfinderApp {
             this.state.panzoomInstance.zoomOut();
         }
     }
-    
+
     /**
      * Highlight route on the map
      */
     highlightRouteOnMap(route) {
         const svg = this.elements.mapWrapper.querySelector('svg');
         if (!svg) return;
-        
+
         // First, clear any existing route highlights
         this.clearRouteHighlights();
-        
+
         // Filter steps for current floor only
         const currentFloorSteps = route.filter(step => {
             // Show floor change steps on their starting floor, other steps on their designated floor
             const stepFloor = step.type === 'floor_change' ? step.floor : (step.floor || 1);
             return stepFloor === this.state.currentFloor;
         });
-        
+
         if (currentFloorSteps.length === 0) return;
-        
+
         console.log('Highlighting route on floor', this.state.currentFloor, 'with steps:', currentFloorSteps);
-        
+
         // Highlight each path segment
         currentFloorSteps.forEach((step, index) => {
             if (step.path_id) {
@@ -982,28 +982,28 @@ class WayfinderApp {
                     pathElement.style.strokeLinejoin = 'round';
                     pathElement.style.opacity = '0.9';
                     pathElement.style.fill = 'none';
-                    
+
                     // Add animation
                     pathElement.style.animation = 'dash 3s linear infinite';
-                    
+
                     console.log('Highlighted path:', step.path_id);
                 } else {
                     console.warn('Path not found:', step.path_id);
                 }
             }
         });
-        
+
         // Add start and end markers
         this.addRouteMarkers(route);
     }
-    
+
     /**
      * Add start and end markers to the route
      */
     addRouteMarkers(route) {
         const svg = this.elements.mapWrapper.querySelector('svg');
         if (!svg) return;
-        
+
         // Find start and end positions (simplified - using known kiosk and destination positions)
         const startMarker = svg.querySelector('#F1_KIOSK_A');
         if (startMarker) {
@@ -1016,7 +1016,7 @@ class WayfinderApp {
             marker.style.animation = 'pulse 2s infinite';
             svg.appendChild(marker);
         }
-        
+
         // Add end marker if on the destination floor
         const destination = this.state.selectedDestination;
         if (destination && destination.floor === this.state.currentFloor) {
@@ -1033,21 +1033,21 @@ class WayfinderApp {
             }
         }
     }
-    
+
     /**
      * Generate QR code for mobile handoff
      */
     generateQRCode() {
         if (!window.QRCode || !this.elements.qrcode) return;
-        
+
         const destination = this.state.selectedDestination;
         if (!destination) return;
-        
+
         const url = `${this.config.apiBaseUrl}${window.location.pathname}?start=F1_KIOSK_A&end=${destination.id}`;
-        
+
         // Clear previous QR code
         this.elements.qrcode.innerHTML = '';
-        
+
         try {
             // Generate new QR code using QRCode.js
             const qrcode = new QRCode(this.elements.qrcode, {
@@ -1058,11 +1058,11 @@ class WayfinderApp {
                 colorLight: '#ffffff', // White
                 correctLevel: QRCode.CorrectLevel.H
             });
-            
+
             console.log('QR code generated successfully for URL:', url);
         } catch (error) {
             console.error('QR code generation failed:', error);
-            
+
             // Fallback: display the URL as text
             this.elements.qrcode.innerHTML = `
                 <div style="padding: 20px; text-align: center; font-size: 12px; word-break: break-all;">
@@ -1072,7 +1072,7 @@ class WayfinderApp {
             `;
         }
     }
-    
+
     /**
      * Check URL parameters for mobile handoff
      */
@@ -1080,48 +1080,48 @@ class WayfinderApp {
         const urlParams = new URLSearchParams(window.location.search);
         const startId = urlParams.get('start');
         const endId = urlParams.get('end');
-        
+
         if (startId && endId) {
             // This is a mobile handoff - show directions immediately
             this.selectDestination(endId);
         }
     }
-    
+
     /**
      * Show selection view
      */
     showSelectionView() {
         this.elements.selectionView.style.display = 'block';
         this.elements.directionsView.style.display = 'none';
-        
+
         // Clear search
         this.elements.searchInput.value = '';
         this.hideSuggestions();
-        
+
         // Clear route state
         this.state.selectedDestination = null;
         this.state.currentRoute = null;
-        
+
         // Remove route highlights
         this.clearRouteHighlights();
-        
+
         // Always return to Floor 1 (where "You are here" kiosk is located)
         if (this.state.currentFloor !== 1) {
             this.switchFloor(1);
         }
-        
+
         // Cleanup scroll observer
         if (this.scrollObserver) {
             this.scrollObserver.disconnect();
             this.scrollObserver = null;
         }
-        
+
         // Clear any pending floor switch timeout
         if (this.floorSwitchTimeout) {
             clearTimeout(this.floorSwitchTimeout);
         }
     }
-    
+
     /**
      * Show directions view
      */
@@ -1129,7 +1129,7 @@ class WayfinderApp {
         this.elements.selectionView.style.display = 'none';
         this.elements.directionsView.style.display = 'block';
     }
-    
+
     /**
      * Clear route highlights from map
      */
@@ -1145,20 +1145,20 @@ class WayfinderApp {
                 el.style.opacity = '';
                 el.style.animation = '';
             });
-            
+
             // Remove route markers
             svg.querySelectorAll('#route-start-marker, #route-end-marker').forEach(el => el.remove());
             svg.querySelectorAll('.route-start, .route-end').forEach(el => el.remove());
         }
     }
-    
+
     /**
      * Handle window resize
      */
     handleResize() {
         const wasMobile = this.state.isMobileView;
         this.state.isMobileView = window.innerWidth <= 768;
-        
+
         // Re-setup map interaction if layout changed
         if (wasMobile !== this.state.isMobileView) {
             setTimeout(() => {
@@ -1166,7 +1166,7 @@ class WayfinderApp {
             }, 100);
         }
     }
-    
+
     /**
      * Hide loading screen
      */
@@ -1176,7 +1176,7 @@ class WayfinderApp {
         }
         this.state.isLoading = false;
     }
-    
+
     /**
      * Show error screen
      */
@@ -1188,7 +1188,7 @@ class WayfinderApp {
             this.elements.errorScreen.style.display = 'flex';
         }
     }
-    
+
     /**
      * Utility: Debounce function calls
      */

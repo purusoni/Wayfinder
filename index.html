@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lockwood Library Wayfinder</title>
+    <title>Lockwood Library Wayfinder - Vol 1.0</title>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Lora for that academic Serif look -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.4.4/dist/panzoom.min.js"></script>
@@ -17,127 +17,121 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
+    <!-- The "Paper" Container -->
     <div class="container">
-        <!-- Main Application -->
+        
+        <!-- Header: The "Title" of the Article -->
+        <header class="panel-header">
+            <h1 class="app-title">Lockwood Library Wayfinder</h1>
+            <div class="current-location">
+                <span class="location-icon">📍</span>
+                Current Location: <strong>Main Entrance Kiosk</strong>
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #666; font-style: normal;">
+                <em>University at Buffalo Libraries • Spatial Navigation System • v1.0</em>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
         <main class="app-main">
             
-            <!-- Left Column - Controls and Directions -->
+            <!-- Left Column: Abstract, Methodology (Controls) -->
             <section class="controls-panel" id="controlsPanel">
                 
-                <!-- Initial Selection View -->
+                <!-- "Abstract": Search & Selection -->
                 <div class="selection-view" id="selectionView">
-                    <header class="panel-header">
-                        <h1 class="app-title">Lockwood Library Wayfinder</h1>
-                        <p class="current-location">
-                            <span class="location-icon">📍</span>
-                            You are at: <strong>Main Entrance Kiosk</strong>
-                        </p>
-                    </header>
                     
-                    <!-- Search Section -->
+                    <h3 class="section-title">1. Search Parameters</h3>
                     <div class="search-section">
                         <div class="search-container">
                             <input 
                                 type="text" 
                                 id="searchInput" 
                                 class="search-input" 
-                                placeholder="Where would you like to go?"
+                                placeholder="Enter destination keyword..."
                                 autocomplete="off"
                             >
                             <button class="search-button" id="searchButton">
                                 <span class="search-icon">🔍</span>
                             </button>
+                            <div class="autocomplete-suggestions" id="autocompleteSuggestions"></div>
                         </div>
-                        <div class="autocomplete-suggestions" id="autocompleteSuggestions"></div>
                     </div>
                     
-                    <!-- Category Buttons -->
+                    <h3 class="section-title">2. Categorical filters</h3>
                     <div class="categories-section">
-                        <h3 class="section-title">Browse by Category</h3>
                         <div class="category-buttons">
                             <button class="category-btn" data-category="restroom">
                                 <span class="category-icon">🚻</span>
-                                Restrooms
+                                Sanitatary Facilities (Restrooms)
                             </button>
                             <button class="category-btn" data-category="study">
                                 <span class="category-icon">📚</span>
-                                Study Rooms
+                                Individual Study Areas
                             </button>
                             <button class="category-btn" data-category="computer">
                                 <span class="category-icon">💻</span>
-                                Computer Labs
+                                Computation Labs
                             </button>
+                            <!-- Maintaining accessibility checkbox -->
+                            <div style="margin-top: 1rem;">
+                                <label class="checkbox-label" style="font-family: var(--font-serif);">
+                                    <input type="checkbox" id="accessibleRoute" class="accessibility-checkbox">
+                                    <span style="margin-right:0.5rem">♿</span> Filter: Accessible Routes Only
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Accessibility Options -->
-                    <div class="accessibility-section">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="accessibleRoute" class="accessibility-checkbox">
-                            <span class="checkbox-custom"></span>
-                            Accessible Route Only
-                        </label>
                     </div>
                 </div>
                 
-                <!-- Directions View -->
+                <!-- "Results": Directions View -->
                 <div class="directions-view" id="directionsView" style="display: none;">
-                    <header class="directions-header">
-                        <button class="back-button" id="backButton">
-                            <span class="back-icon">←</span>
-                            Back to Search
-                        </button>
-                        <div class="route-info">
-                            <div class="route-text">
-                                <h2 class="route-title" id="routeTitle">Route Directions</h2>
-                                <p class="route-description" id="routeDescription"></p>
-                            </div>
-                            <!-- QR Code - Always Visible (Desktop Only) -->
-                            <div class="qr-header-section" id="qrHeaderSection">
-                                <div class="qr-compact">
-                                    <div class="qr-header">
-                                        <span class="qr-icon">📱</span>
-                                        <span class="qr-title-text">Take with you</span>
-                                    </div>
-                                    <div id="qrcode"></div>
-                                    <p class="qr-compact-text">Scan to continue on your phone</p>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
+                    <button class="back-button" id="backButton">
+                        ← Return to Parameters
+                    </button>
                     
-                    <!-- Step-by-step directions -->
+                    <div class="route-info">
+                        <div class="route-text">
+                            <h2 class="route-title" id="routeTitle">3. Navigation Analysis</h2>
+                            <p class="route-description" id="routeDescription" style="font-style: italic; color: #666;"></p>
+                        </div>
+                        
+                        <!-- QR Code Section -->
+                        <div class="qr-compact" id="qrHeaderSection">
+                            <div id="qrcode"></div>
+                            <p class="qr-compact-text">Fig 1a. Mobile Data Transfer</p>
+                        </div>
+                    </div>
+                    
                     <div class="directions-list" id="directionsList">
-                        <!-- Directions will be populated by JavaScript -->
+                        <!-- Populated by JS -->
                     </div>
                 </div>
                 
             </section>
             
-            <!-- Right Column - Interactive Map -->
-            <section class="map-panel">
+            <!-- Right Column: "Figure 1" (The Map) -->
+            <section class="map-panel" data-active-floor="1">
                 
-                <!-- Map Controls -->
+                <!-- Map Controls (Instruments) -->
                 <div class="map-controls">
                     <div class="floor-selector">
-                        <button class="floor-btn active" data-floor="1" id="floor1Btn">Floor 1</button>
-                        <button class="floor-btn" data-floor="2" id="floor2Btn">Floor 2</button>
+                        <span style="font-family: var(--font-sans); font-size: 0.8rem; margin-right: 0.5rem; color: #666;">LAYERS:</span>
+                        <button class="floor-btn active" data-floor="1" id="floor1Btn">Level 1</button>
+                        <button class="floor-btn" data-floor="2" id="floor2Btn">Level 2</button>
                     </div>
                     
                     <div class="zoom-controls">
-                        <button class="zoom-btn" id="zoomInBtn">
-                            <span class="zoom-icon">+</span>
-                        </button>
-                        <button class="zoom-btn" id="zoomOutBtn">
-                            <span class="zoom-icon">−</span>
-                        </button>
+                        <button class="zoom-btn" id="zoomInBtn">+</button>
+                        <button class="zoom-btn" id="zoomOutBtn">−</button>
                     </div>
                 </div>
                 
                 <!-- Map Container -->
                 <div class="map-container" id="mapContainer">
                     <div class="map-wrapper" id="mapWrapper">
-                        <!-- SVG maps will be loaded here -->
+                        <!-- SVG maps loaded here -->
                     </div>
                 </div>
                 
@@ -145,23 +139,23 @@
             
         </main>
         
-        <!-- Loading Screen -->
-        <div class="loading-screen" id="loadingScreen">
-            <div class="loading-spinner"></div>
-            <p class="loading-text">Loading library map...</p>
+        <!-- Loading Overlay -->
+        <div class="loading-screen" id="loadingScreen" style="position: fixed; top:0; left:0; width:100%; height:100%; background:white; display:flex; align-items:center; justify-content:center; z-index:9999;">
+            <div style="text-align:center;">
+                <div class="loading-spinner" style="border: 2px solid #f3f3f3; border-top: 2px solid #005bbb; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite;"></div>
+                <p>Retrieving Spatial Data...</p>
+            </div>
+            <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
         </div>
         
-        <!-- Error Screen -->
-        <div class="error-screen" id="errorScreen" style="display: none;">
-            <div class="error-content">
-                <h2 class="error-title">Unable to load map</h2>
-                <p class="error-message">Please try refreshing the page or contact library staff for assistance.</p>
-                <button class="retry-button" id="retryButton">Try Again</button>
-            </div>
+        <!-- Error Overlay -->
+        <div class="error-screen" id="errorScreen" style="display: none; position: fixed; top:20px; right:20px; background: #e56a54; color: white; padding: 1rem; border-radius: 4px;">
+             <strong>System Error:</strong> Unable to load map data.
+             <button id="retryButton" style="margin-left:1rem; border:1px solid white; background:none; color:white; cursor:pointer;">Retry</button>
         </div>
         
     </div>
-    
+
     <!-- Custom JavaScript -->
     <script src="app.js"></script>
 </body>
